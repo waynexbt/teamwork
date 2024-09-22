@@ -1,0 +1,34 @@
+# React Native
+node_modules/
+ios/
+android/
+*.log
+*.swp
+*.iml
+.idea/
+*.hprof
+*.orig
+*.rej
+*.sublime-workspace
+*.sublime-project
+*.swp
+.sass-cache
+/.gradle
+.DS_Store
+.env
+.env.test
+.env.production
+.env.local
+/.expo
+/.expo-shared
+.expo/
+.expo-shared/
+
+# macOS
+*.DS_Store
+
+# Android
+*.apk
+*.ap_
+.cxx/
+local.properties
