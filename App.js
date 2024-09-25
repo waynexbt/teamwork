@@ -9,6 +9,10 @@ import { thunk } from "redux-thunk";
 import rootReducer from "./stores/rootReducer";
 import { persistStore, persistReducer } from "redux-persist";
 import Toast from "react-native-toast-message";
+import "./translation";
+import i18n from "./translation";
+import 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const persistConfig = {
   key: "root",
@@ -22,12 +26,14 @@ const persistor = persistStore(store);
 
 const App = () => {
   return (
+    <BottomSheetModalProvider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <AppNavigation />
         <Toast ref={(ref) => Toast.setRef(ref)} />
       </PersistGate>
     </Provider>
+    </BottomSheetModalProvider>
   );
 };
 

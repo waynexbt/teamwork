@@ -1,23 +1,22 @@
-import { Picker } from "@react-native-picker/picker";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
+  Pressable,
   ScrollView,
   Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomPicker from "../components/CustomPicker";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { api_url } from "../config";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
+import { BottomSheetModalProvider, BottomSheetModal } from "@gorhom/bottom-sheet";
+import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Exchange = () => {
   const userId = useSelector((state) => state.userReducer.currentUser?._id);
@@ -25,7 +24,13 @@ const Exchange = () => {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedOption2, setSelectedOption2] = useState(null);
+  const BottomSheetModalRef = useRef(null);
+  const snapPoints = ["48%"];
 
+  function handlePresentModal() {
+    BottomSheetModalRef.current?.present();
+    
+  };
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
 
@@ -220,535 +225,174 @@ const Exchange = () => {
   }, [finalResult]);
 
   return (
-    <SafeAreaView style={{ 
-      flex: 1,
-      backgroundColor: "white"}}>
-      <ScrollView style={{ height: "100%" }}>
-        <View style={styles.mainView}>
-          <View
+    <BottomSheetModalProvider>
+    <SafeAreaView 
+    style={{
+      backgroundColor: "white",
+      height: "100%"
+    }}>
+    <ScrollView
+      style={{
+        height: "100%"
+      }}
+    >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Ionicons
+            name="arrow-back-outline"
+            size={30}
+            color="black"
             style={{
-              flexDirection: "row",
-              alignItems: "center",
+              padding: 5,
+              marginLeft: 10,
+              marginTop: 12,
             }}
-          >
-            <TouchableOpacity onPress={() => navigation.navigate("Home2")}>
-              <Ionicons name="arrow-back-outline" size={30} color="black" />
-            </TouchableOpacity>
-            <Text
+            onPress={() => navigation.goBack("")}
+          />
+          <Text
             style={{
               padding: 5,
               marginLeft: 5,
-              fontSize: 20,
-              fontWeight: "bold",
+              marginTop: 10,
+              fontSize: 21,
             }}
           >
             Exchange
           </Text>
-          </View>
-          <View style={{ marginTop: 30 }}>
-            <Text style={{ color: "black", fontSize: 17, marginBottom: 5, marginLeft: 5  }}>From</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingBottom: 8,
-                borderBottomWidth: 2,
-                borderBottomColor: "gray",
-              }}
-            >
-              <TextInput
-                style={{ width: "45%", padding: 10 }}
-                placeholder="Amount"
-                placeholderTextColor="gray"
-              />
-              <TouchableOpacity>
-                <Text style={{ color: "aqua", marginLeft:60 }}>Maximum</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: 100,
-                  height: 30,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-                onPress={() => setShow(!show)}
-              >
-                <View style={{ marginHorizontal: 10 }}>
-                  {selectedOption?.icon ? (
-                    selectedOption.icon
-                  ) : (
-                    <Image
-          source={require("../assets/ETH.png")}
+        </View>
+      <View style={{
+        backgroundColor: "#f8f8f8",
+        width: "93%",
+        margin: "auto",
+        borderRadius: 5,
+        marginTop: 40
+      }}>
+        <Text
           style={{
-            alignItems: "center",
-            height: 30,
-            width: 30,
-            marginLeft: 5
+            padding: 10,
+            marginLeft: 5,
+            marginTop: 5,
+            fontSize: 17,
+            color: "gray",
           }}
-        />
-                  )}
-                </View>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 14,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {selectedOption?.label ? selectedOption.label : "ETH"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+        >
+          From
+        </Text>
+        <View style={{ marginBottom: 10
+        }}>
+        <Pressable onPress={handlePresentModal} style={{flexDirection: "row", gap: 8, padding: 14}} >
+        <Image
+            source={require("../assets/USDT.png")}
+            style={{
+              alignItems: "center",
+              height: 30,
+              width: 30,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 20,
+              color: "black",
+              fontWeight: "650",
+              marginTop: 1
+            }}
+          >
+            USDT
+          </Text>
+          <Ionicons name="caret-down-outline" size={18} color="black" style={{marginTop: 4}} />
+           </Pressable>
+        </View>
+      </View>
+      <View style={{margin: "auto", backgroundColor: "aqua", borderRadius: 35, padding: 10, marginBottom: -5, marginTop: -10, borderStyle: "solid", position: "relative"}}>
+      <AntDesign name="swap" size={26} color="black" />
+      </View>
+      <View style={{
+        backgroundColor: "#f8f8f8",
+        width: "93%",
+        margin: "auto",
+        borderRadius: 5,
+        paddingBottom: 5
+      }}>
+        <Text
+          style={{
+            padding: 10,
+            marginLeft: 5,
+            marginTop: 5,
+            fontSize: 17,
+            color: "gray",
+          }}
+        >
+          To
+        </Text>
+        <View style={{ marginBottom: 10
+        }}>
+        <Pressable onPress={handlePresentModal} style={{flexDirection: "row", gap: 8, padding: 14}} >
+        <Image
+            source={require("../assets/BTC.png")}
+            style={{
+              alignItems: "center",
+              height: 30,
+              width: 30,
+            }}
+          />
+
+          <Text
+            style={{
+              fontSize: 20,
+              color: "black",
+              fontWeight: "650",
+              marginTop: 1
+            }}
+          >
+            BTC
+          </Text>
+          <Ionicons name="caret-down-outline" size={18} color="black" style={{marginTop: 6}} />
+           </Pressable>
+        </View>
+      </View>
+      <Pressable
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
+            padding: 15,
+            backgroundColor: "aqua",
+            width: "93%",
+            marginTop: 20,
+            marginBottom: 5
+          }}
+        >
+          <Text style={{ color: "white", marginRight: 5, fontSize: 18 }}>Convert</Text>
+        </Pressable>
+        <Text
+          style={{
+            padding: 10,
+            margin: "auto",
+            fontSize: 17,
+            color: "gray",
+          }}
+        >
+          Exchange Rate: 1 USDT 
+        </Text>
+        <BottomSheetModal
+        ref={BottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        >
           <View>
-            <Text style={{ color: "black" }}>
-              Available Amount: 0 USDT
-            </Text>
-          </View>
-          <View
-            style={{
-              position: "relative",
-              marginVertical: 90,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <FontAwesome
-              name="exchange"
-              size={24}
-              color="gray"
-              style={{ transform: [{ rotate: "90deg" }], position: "absolute" }}
-            />
-          </View>
-          <View style={{ marginTop: 30 }}>
-            <Text style={{ color: "black", fontSize: 17, marginBottom: 5, marginLeft: 5 }}>To</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingBottom: 8,
-                borderBottomWidth: 2,
-                borderBottomColor: "gray",
-              }}
-            >
-              <TextInput
-                style={{ width: "60%", padding: 10 }}
-                placeholder="Amount received"
-                placeholderTextColor="gray"
-              />
-
-              <TouchableOpacity
-                style={{
-                  width: 100,
-                  height: 30,
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-                onPress={() => setShow2(!show2)}
-              >
-                <View style={{ marginHorizontal: 10 }}>
-                  {selectedOption2?.icon ? (
-                    selectedOption2.icon
-                  ) : (
-                    <Image
-          source={require("../assets/BTC.png")}
-          style={{
-            alignItems: "center",
-            height: 30,
-            width: 30,
-            marginLeft: 60,
-          }}
-        />
-                  )}
-                </View>
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 14,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {selectedOption2?.label ? selectedOption2.label : "BTC"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "aqua",
-              paddingVertical: 14,
-              justifyContent: "center",
-              alignItems: "center",
-              marginVertical: 20,
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-              Convert
-            </Text>
-          </TouchableOpacity>
-          {result && (
-            <Text style={{ color: "black", fontSize: 15 }}>{result}</Text>
-          )}
-          {/* <View
-            style={{
-              marginTop: 80,
-              height: "80%",
-              backgroundColor: "#27272A",
-              borderWidth: 0.3,
-              borderColor: "aqua",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                top: 1,
-                fontSize: 21,
-                textAlign: "center",
-                color: "white",
-                // marginTop:30
-              }}
-            >
-              Choose currencies and type amount
-            </Text>
-            <View
-              style={{
-                height: "40%",
-                width: "100%",
-                // backgroundColor: 'red',
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  height: "50%",
-                  width: "50%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "white" }}>From</Text>
-                <TouchableOpacity
-                  style={{
-                    width: 100,
-                    height: 30,
-                    backgroundColor: "aqua",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderWidth: 0.8,
-                    borderColor: "white",
-                  }}
-                  onPress={() => setShow(!show)}
-                >
-                  {selectedOption ? (
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {selectedOption?.label}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Choose
-                    </Text>
-                  )}
-                </TouchableOpacity>
-                <View style={styles.listView}>
-                  {filteredOptions
-                    ? show && (
-                        <FlatList
-                          data={filteredOptions}
-                          renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                              onPress={() => handleSelection(item)}
-                              style={styles.list}
-                            >
-                              <Text style={{ color: "white", fontSize: 17 }}>
-                                {item?.label}
-                              </Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                      )
-                    : show && (
-                        <FlatList
-                          data={options}
-                          renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                              onPress={() => handleSelection(item)}
-                              style={styles.list}
-                            >
-                              <Text style={{ color: "white", fontSize: 17 }}>
-                                {item?.label}
-                              </Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                      )}
-                </View>
-              </View>
-
-              <View
-                style={{
-                  height: "50%",
-                  width: "50%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ fontSize: 18, color: "white" }}>To</Text>
-
-                <TouchableOpacity
-                  style={{
-                    width: 100,
-                    height: 30,
-                    backgroundColor: "aqua",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderWidth: 0.8,
-                    borderColor: "white",
-                  }}
-                  onPress={() => setShow2(!show2)}
-                >
-                  {selectedOption2 ? (
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {selectedOption2?.label}
-                    </Text>
-                  ) : (
-                    <Text
-                      style={{
-                        color: "black",
-                        fontSize: 17,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Choose
-                    </Text>
-                  )}
-                </TouchableOpacity>
-                <View style={styles.listView}>
-                  {filteredOptions2
-                    ? show2 && (
-                        <FlatList
-                          data={filteredOptions2}
-                          keyExtractor={(item) => item.id}
-                          renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                              key={index}
-                              onPress={() => handleSelection2(item)}
-                              style={styles.list}
-                            >
-                              <Text style={{ color: "white", fontSize: 17 }}>
-                                {item?.label}
-                              </Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                      )
-                    : show2 && (
-                        <FlatList
-                          data={options}
-                          keyExtractor={(item) => item.id}
-                          renderItem={({ item, index }) => (
-                            <TouchableOpacity
-                              key={item.id}
-                              onPress={() => handleSelection2(item)}
-                              style={styles.list}
-                            >
-                              <Text style={{ color: "white", fontSize: 17 }}>
-                                {item?.label}
-                              </Text>
-                            </TouchableOpacity>
-                          )}
-                        />
-                      )}
-                </View>
-              </View>
-            </View>
-
-            <View
-              style={{
-                height: "50%",
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "space-around",
-              }}
-            >
-              <TextInput
-                style={{
-                  backgroundColor: "white",
-                  width: "80%",
-                  borderRadius: 30,
-                  padding: 5,
-                  paddingHorizontal: 30,
-                  fontSize: 20,
-                }}
-                placeholder="Type amount..."
-                keyboardType="numeric"
-                onChangeText={handelAmount}
-                onFocus={() => setShow(false)}
-                // onPointerEnter={}
-              />
-              {result && (
-                <Text style={{ color: "white", fontSize: 15 }}>{result}</Text>
-              )}
-              {result && (
-                <TouchableOpacity
-                  onPress={() => sendRequest()}
-                  style={{
-                    width: 100,
-                    height: 30,
-                    backgroundColor: "aqua",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderWidth: 0.8,
-                    borderColor: "white",
-                  }}
-                >
-                  <Text
-                    style={{ fontSize: 18, color: "black", fontWeight: "bold" }}
-                  >
-                    Convert
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </View> */}
-        </View>
-      </ScrollView>
-      {show && (
-        <View style={styles.listView}>
-          {filteredOptions
-            ? show && (
-                <FlatList
-                  data={filteredOptions}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      onPress={() => handleSelection(item)}
-                      style={styles.list}
-                    >
-                      <View style={{ marginRight: 10 }}>{item?.icon}</View>
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 17,
-                        }}
-                      >
-                        {item?.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              )
-            : show && (
-                <FlatList
-                  data={options}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      onPress={() => handleSelection(item)}
-                      style={styles.list}
-                    >
-                      <View style={{ marginRight: 10 }}>{item?.icon}</View>
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 17,
-                        }}
-                      >
-                        {item?.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              )}
-        </View>
-      )}
-      {show2 && (
-        <View style={styles.listView}>
-          {filteredOptions2
-            ? show2 && (
-                <FlatList
-                  data={filteredOptions2}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => handleSelection2(item)}
-                      style={styles.list}
-                    >
-                      <View style={{ marginRight: 10 }}>{item?.icon}</View>
-                      <Text style={{ color: "white", fontSize: 17 }}>
-                        {item?.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              )
-            : show2 && (
-                <FlatList
-                  data={options}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity
-                      key={item.id}
-                      onPress={() => handleSelection2(item)}
-                      style={styles.list}
-                    >
-                      <View style={{ marginRight: 10 }}>{item?.icon}</View>
-                      <Text style={{ color: "black", fontSize: 17 }}>
-                        {item?.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                />
-              )}
-        </View>
-      )}
+            <Text>Hello and Welcome</Text> </View>
+        </BottomSheetModal>
+    </ScrollView>
     </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 };
 
 export default Exchange;
-
-export const styles = StyleSheet.create({
-  mainView: {
-    padding: "3%",
-    height: "100%",
-    width: "100%",
-    backgroundColor: "white",
-    position: "relative",
-  },
-  list: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-    paddingVertical: 5,
-    // padding: 5,
-    // borderWidth: 0.3,
-    // borderColor: "aqua",
-  },
-  listView: {
-    position: "absolute",
-    top: "90%",
-    height: "100%",
-    width: "100%",
-  },
-});

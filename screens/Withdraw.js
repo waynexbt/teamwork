@@ -1,10 +1,10 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Image, Pressable, TouchableOpacity } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import { ScrollView } from "react-native-virtualized-view"
 
-const Deposit = ({ navigation }) => {
+const Withdraw = ({ navigation }) => {
   return (
     <SafeAreaView 
     style={{
@@ -42,7 +42,7 @@ const Deposit = ({ navigation }) => {
               fontSize: 21,
             }}
           >
-            Deposit
+            Withdraw
           </Text>
         </View>
       <View>
@@ -58,8 +58,7 @@ const Deposit = ({ navigation }) => {
           Network
         </Text>
       </View>
-
-      <Pressable
+      <TouchableOpacity
         style={{
           flexDirection: "row",
           width: "95%",
@@ -74,94 +73,7 @@ const Deposit = ({ navigation }) => {
           borderWidth: 0.5,
           alignItems: "center",
         }}
-        onPress={() => navigation.navigate("Usdterc")}
-      >
-        <Image
-          source={require("../assets/USDT.png")}
-          style={{
-            alignItems: "center",
-            height: 25,
-            width: 25,
-            marginRight: 10,
-          }}
-        />
-        <Text
-          style={{
-            fontSize: 20,
-            color: "black",
-          }}
-        >
-          USDT-ERC
-        </Text>
-        <View
-          style={{
-            // marginLeft: 200,
-            marginLeft: "auto",
-          }}
-        >
-          <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
-        </View>
-      </Pressable>
-      <Pressable
-        style={{
-          flexDirection: "row",
-          width: "95%",
-          alignSelf: "center",
-          marginTop: 3,
-          marginBottom: 10,
-          borderRadius: 5,
-          padding: 20,
-          backgroundColor: "#F8F8F8",
-          borderColor: "#D3D3D3",
-          borderStyle: "solid",
-          borderWidth: 0.5,
-          alignItems: "center",
-        }}
-        onPress={() => navigation.navigate("Usdc")}
-      >
-        <Image
-          source={require("../assets/USDT-ERC.png")}
-          style={{
-            alignItems: "center",
-            height: 25,
-            width: 25,
-            marginRight: 10,
-          }}
-        />
-        <Text
-          style={{
-            justifyContent: "center",
-            fontSize: 20,
-            color: "black",
-          }}
-        >
-          USDC-ERC
-        </Text>
-        <View
-          style={{
-            // marginLeft: 200,
-            marginLeft: "auto",
-          }}
-        >
-          <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
-        </View>
-      </Pressable>
-      <Pressable
-        style={{
-          flexDirection: "row",
-          width: "95%",
-          alignSelf: "center",
-          marginTop: 3,
-          marginBottom: 10,
-          borderRadius: 5,
-          padding: 20,
-          backgroundColor: "#F8F8F8",
-          borderColor: "#D3D3D3",
-          borderStyle: "solid",
-          borderWidth: 0.5,
-          alignItems: "center",
-        }}
-        onPress={() => navigation.navigate("Usdttrc")}
+        onPress={() => navigation.navigate("WithdrawUSDTTRC")}
       >
         <Image
           source={require("../assets/USDT.png")}
@@ -189,7 +101,7 @@ const Deposit = ({ navigation }) => {
         >
           <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
         </View>
-      </Pressable>
+      </TouchableOpacity>
       <Pressable
         style={{
           flexDirection: "row",
@@ -205,7 +117,50 @@ const Deposit = ({ navigation }) => {
           borderWidth: 0.5,
           alignItems: "center",
         }}
-        onPress={() => navigation.navigate("Btc")}
+        onPress={() => navigation.navigate("WithdrawUSDTERC")}
+      >
+        <Image
+          source={require("../assets/USDT.png")}
+          style={{
+            alignItems: "center",
+            height: 25,
+            width: 25,
+            marginRight: 10,
+          }}
+        />
+        <Text
+          style={{
+            fontSize: 20,
+            color: "black",
+          }}
+        >
+          USDT-ERC
+        </Text>
+        <View
+          style={{
+            // marginLeft: 200,
+            marginLeft: "auto",
+          }}
+        >
+          <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
+        </View>
+      </Pressable>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          width: "95%",
+          alignSelf: "center",
+          marginTop: 3,
+          marginBottom: 10,
+          borderRadius: 5,
+          padding: 20,
+          backgroundColor: "#F8F8F8",
+          borderColor: "#D3D3D3",
+          borderStyle: "solid",
+          borderWidth: 0.5,
+          alignItems: "center",
+        }}
+        onPress={() => navigation.navigate("WithdrawBTC")}
       >
         <Image
           source={require("../assets/BTC.png")}
@@ -233,8 +188,8 @@ const Deposit = ({ navigation }) => {
         >
           <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
         </View>
-      </Pressable>
-      <Pressable
+      </TouchableOpacity>
+      <TouchableOpacity
         style={{
           flexDirection: "row",
           width: "95%",
@@ -248,7 +203,7 @@ const Deposit = ({ navigation }) => {
           borderStyle: "solid",
           borderWidth: 0.5,
         }}
-        onPress={() => navigation.navigate("Eth")}
+        onPress={() => navigation.navigate("WithdrawETH")}
       >
         <Image
           source={require("../assets/ETH.png")}
@@ -276,10 +231,54 @@ const Deposit = ({ navigation }) => {
         >
           <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
         </View>
-      </Pressable>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          width: "95%",
+          alignSelf: "center",
+          marginTop: 3,
+          marginBottom: 10,
+          borderRadius: 5,
+          padding: 20,
+          backgroundColor: "#F8F8F8",
+          borderColor: "#D3D3D3",
+          borderStyle: "solid",
+          borderWidth: 0.5,
+          alignItems: "center",
+        }}
+        onPress={() => navigation.navigate("WithdrawUSDC")}
+      >
+        <Image
+          source={require("../assets/USDT-ERC.png")}
+          style={{
+            alignItems: "center",
+            height: 25,
+            width: 25,
+            marginRight: 10,
+          }}
+        />
+        <Text
+          style={{
+            justifyContent: "center",
+            fontSize: 20,
+            color: "black",
+          }}
+        >
+          USDC
+        </Text>
+        <View
+          style={{
+            // marginLeft: 200,
+            marginLeft: "auto",
+          }}
+        >
+          <Ionicons name="md-arrow-forward-circle" size={24} color="gray" />
+        </View>
+      </TouchableOpacity>
     </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Deposit;
+export default Withdraw;

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import DepositRecordCard from '../components/DepositRecordCard';
 import { useSelector } from 'react-redux';
 import { api_url } from '../config';
 import { Ionicons } from '@expo/vector-icons';
-import { ScrollView } from "react-native-virtualized-view"
+import WithdrawRecordCard from './WithdrawRecordCard';
 
 
 
-const DepositRecord = ({navigation}) => {
+
+const WithdrawRecord = ({navigation}) => {
     const user = useSelector((state) => state?.userReducer?.currentUser);
     const token = useSelector((state) => state?.userReducer?.currentUser?.token);
     const [filter, setFilter] = useState('All');
@@ -17,7 +17,7 @@ const DepositRecord = ({navigation}) => {
     const filteredData = data?.filter(item => filter === 'All' || item?.status === filter);
     const fetchUserData = async () => {
         try {
-            const response = await fetch(`${api_url}/deposit/getAllById/${user?._id}`, {
+            const response = await fetch(`${api_url}/withdrawal/getAll/${user?._id}`, {
                 method: 'GET',
                 headers: {
                     // Add any headers if needed
@@ -39,45 +39,33 @@ const DepositRecord = ({navigation}) => {
 
 
     return (
-        <SafeAreaView 
-    style={{
-      backgroundColor: "white",
-      height: "100%"
-    }}>
-       <ScrollView
-      style={{
-        height: "100%"
-      }}
-    >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Ionicons
-            name="arrow-back-outline"
-            size={30}
-            color="black"
-            style={{
-              padding: 5,
-              marginLeft: 10,
-              marginTop: 12,
-            }}
-            onPress={() => navigation.goBack("")}
-          />
-          <Text
-            style={{
-              padding: 5,
-              marginLeft: 5,
-              marginTop: 10,
-              fontSize: 21,
-            }}
-          >
-            Deposit History
-          </Text>
-        </View>
+        <SafeAreaView style={{
+            backgroundColor: "white",
+            flex: 1
+        }}>
+            <View
+                style={{
+                    marginTop:15,
+                    marginLeft:15,
+                    flexDirection: "row",
+                }}
+            >
+                <Ionicons
+                    name="arrow-back-outline"
+                    size={30}
+                    color="black"
+                    onPress={() => navigation.goBack("Home")}
+                />
+                <Text
+                    style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        paddingTop: 3
+                    }}
+                >
+                  Withdraw History
+                </Text>
+            </View>
             <View style={styles.divider} />
             <View >
                 <View style={styles.tabContainer}>
@@ -96,12 +84,11 @@ const DepositRecord = ({navigation}) => {
                     keyExtractor={item => item?._id}
                     renderItem={({ item }) => (
                         <View >
-                            <DepositRecordCard item={item} />
+                            <WithdrawRecordCard item={item} />
                         </View>
                     )}
                 />
             </View>
-            </ScrollView>
         </SafeAreaView>
 
     );
@@ -135,4 +122,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default DepositRecord;
+export default WithdrawRecord;

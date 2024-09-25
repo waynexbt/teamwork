@@ -395,11 +395,11 @@ useEffect(() => {
               style={{
                 fontSize: 18,
                 fontWeight: '600',
-                color: selectTab === 'USDT-M' ? 'black' : 'silver',
+                color: selectTab === 'Futures' ? 'black' : 'silver',
               }}
-              onPress={() => setSelectTab('USDT-M')}
+              onPress={() => setSelectTab('Futures')}
             >
-              USDT-M
+              Futures
             </Text>
           </View>
 

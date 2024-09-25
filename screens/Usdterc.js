@@ -152,6 +152,7 @@ console.log("CURRENT USDTTRc",currentUser)
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "95%"
           }}
         >
           <View
@@ -167,7 +168,7 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               padding: 5,
               marginLeft: 10,
-              marginTop: 10,
+              marginTop: 12,
             }}
             onPress={() => navigation.navigate("Deposit")}
           />
@@ -176,8 +177,7 @@ console.log("CURRENT USDTTRc",currentUser)
               padding: 5,
               marginLeft: 5,
               marginTop: 10,
-              fontSize: 20,
-              fontWeight: "bold",
+              fontSize: 21,
             }}
           >
             Deposit
@@ -204,12 +204,9 @@ console.log("CURRENT USDTTRc",currentUser)
           >
              <FontAwesome5
             name="history"
-            size={25}
+            size={23}
             color="black"
-            style={{
-              padding: 5,
-              marginLeft: 240,
-              marginRight: 20
+            style={{ marginTop: 9
             }}
             onPress={() => navigation.navigate("DepositRecord")}
           />
@@ -221,10 +218,11 @@ console.log("CURRENT USDTTRc",currentUser)
         <View
           style={{
             flexDirection: "row",
-            marginTop: 40,
+            marginTop: 30,
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal: 19,
+            width: "100%",
+            paddingHorizontal: 20
           }}
         >
           <Text
@@ -245,16 +243,15 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              gap: 8
             }}
           >
             <Image
             source={require("../assets/USDT.png")}
             style={{
               alignItems: "center",
-              height: 28,
-              width: 28,
-              marginLeft: 190,
-              marginRight: 10,
+              height: 20,
+              width: 20,
             }}
           />
 
@@ -294,6 +291,7 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               padding: 25,
               textAlign: "center",
+              width: "95%",
               fontSize: 18,
               color: "gray",
               textDecorationLine: "underline",
@@ -336,20 +334,18 @@ console.log("CURRENT USDTTRc",currentUser)
             alignItems: "center",
           }}
         >
-          <GestureHandlerRootView>
             <TextInput
               style={{
                 borderWidth: 1,
-                width: 400,
                 padding: 15,
                 marginTop: 10,
+                width: "95%"
               }}
               placeholder="Please Enter Amount"
               value={depositAmount}
               onChangeText={(text) => setDepositAmount(text)}
               keyboardType="numeric"
             />
-          </GestureHandlerRootView>
         </View>
         <View
           style={{
@@ -392,17 +388,15 @@ console.log("CURRENT USDTTRc",currentUser)
             justifyContent: "center",
             alignItems: "center",
             alignSelf: "center",
-            padding: 10,
+            padding: 15,
             backgroundColor: "aqua",
-            borderRadius: 25,
-            width: "100%",
+            width: "95%",
             marginTop: 20,
             marginBottom: "5%",
           }}
           onPress={handleDeposit}  
         >
-          <Text style={{ color: "white", marginRight: 5 }}>Confirm recharge</Text>
-          <Ionicons name="ios-send" size={24} color="white" />
+          <Text style={{ color: "white", marginRight: 5 }}>Confirm Deposit</Text>
         </TouchableOpacity>
       </ScrollView>
       </SafeAreaView>

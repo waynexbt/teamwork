@@ -7,19 +7,18 @@ import {
   TouchableOpacity,
   Button,
   Dimensions,
+  Platform,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import * as Clipboard from 'expo-clipboard';
-import { Platform } from 'react-native';
-
 import {
+  Entypo,
   Ionicons,
   FontAwesome5,
   MaterialCommunityIcons,
-  Entypo
 } from "@expo/vector-icons";
 import {
   GestureHandlerRootView,
@@ -29,7 +28,7 @@ import {
 import ImageSelect from "../components/ImageSelect";
 import Toast from "react-native-toast-message";
 import { api_url } from "../config";
-import { shallowEqual, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import DepositImage from "../components/DepositImage";
 
 const Eth = ({ navigation }) => {
@@ -39,16 +38,14 @@ const Eth = ({ navigation }) => {
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
-
   // _______________________________________
 
   const [image, setImage] = useState(null);
-  console.log(image)
   // const { userReducer } = useSelector((state) => state);
   const currentUser  = useSelector(
     (state) => state?.userReducer?.currentUser
   );
-console.log("CURRENT USDTTRc",currentUser)
+console.log("CURRENT ETH",currentUser)
   const data = {
     userId: currentUser?._id,
     username: currentUser?.username,
@@ -123,7 +120,7 @@ console.log("CURRENT USDTTRc",currentUser)
           Toast.show({
             type: 'error',
             text1: 'Error',
-            text2: 'Something went wrong',
+            text2: `Something went wrong`,
           });
         }
       } catch (e) {
@@ -136,12 +133,11 @@ console.log("CURRENT USDTTRc",currentUser)
       }
     }
   };
-  
 
   const [copiedText, setCopiedText] = React.useState('');
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync('BTC');
+    await Clipboard.setStringAsync('0x4A1f2938AB5a0250E07e38f9a91774880Cef1C6d');
   };
 
   return (
@@ -156,6 +152,7 @@ console.log("CURRENT USDTTRc",currentUser)
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            width: "95%"
           }}
         >
           <View
@@ -171,7 +168,7 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               padding: 5,
               marginLeft: 10,
-              marginTop: 10,
+              marginTop: 12,
             }}
             onPress={() => navigation.navigate("Deposit")}
           />
@@ -180,8 +177,7 @@ console.log("CURRENT USDTTRc",currentUser)
               padding: 5,
               marginLeft: 5,
               marginTop: 10,
-              fontSize: 20,
-              fontWeight: "bold",
+              fontSize: 21,
             }}
           >
             Deposit
@@ -208,14 +204,11 @@ console.log("CURRENT USDTTRc",currentUser)
           >
              <FontAwesome5
             name="history"
-            size={25}
+            size={23}
             color="black"
-            style={{
-              padding: 5,
-              marginLeft: 240,
-              marginRight: 20
+            style={{ marginTop: 9
             }}
-            onPress={() => navigation.navigate("Deposithistory")}
+            onPress={() => navigation.navigate("DepositRecord")}
           />
           </View>
 
@@ -225,10 +218,11 @@ console.log("CURRENT USDTTRc",currentUser)
         <View
           style={{
             flexDirection: "row",
-            marginTop: 40,
+            marginTop: 30,
             justifyContent: "space-between",
             alignItems: "center",
-            paddingHorizontal: 19,
+            width: "100%",
+            paddingHorizontal: 20
           }}
         >
           <Text
@@ -249,27 +243,26 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              gap: 8
             }}
           >
             <Image
             source={require("../assets/ETH.png")}
             style={{
               alignItems: "center",
-              height: 28,
-              width: 28,
-              marginLeft: 190,
-              marginRight: 10,
+              height: 20,
+              width: 20,
             }}
           />
 
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: "600",
               color: "black",
             }}
           >
-          ETH
+            ETH
           </Text>
           </View>
 
@@ -298,6 +291,7 @@ console.log("CURRENT USDTTRc",currentUser)
             style={{
               padding: 25,
               textAlign: "center",
+              width: "95%",
               fontSize: 18,
               color: "gray",
               textDecorationLine: "underline",
@@ -340,20 +334,18 @@ console.log("CURRENT USDTTRc",currentUser)
             alignItems: "center",
           }}
         >
-          <GestureHandlerRootView>
             <TextInput
               style={{
                 borderWidth: 1,
-                width: 400,
                 padding: 15,
                 marginTop: 10,
+                width: "95%"
               }}
               placeholder="Please Enter Amount"
               value={depositAmount}
               onChangeText={(text) => setDepositAmount(text)}
               keyboardType="numeric"
             />
-          </GestureHandlerRootView>
         </View>
         <View
           style={{
@@ -371,9 +363,6 @@ console.log("CURRENT USDTTRc",currentUser)
             Click to upload pictures
           </Text>
         </View>
-        {
-         Platform.OS === 'web' && (<input accept="image/*" style={{display:'none'}} ref={fileInputRef} type="file" onChange={handleFileChange}/>)
-        }
         <Pressable
           style={{
             alignSelf: "center",
@@ -384,7 +373,11 @@ console.log("CURRENT USDTTRc",currentUser)
             backgroundColor: "#0e1111",
           }}  onPress={() => Platform.OS === 'web' ? handleImageClick() : openImagePickerAsync()}
         >
+          {
+         Platform.OS === 'web' && (<input accept="image/*" style={{display:'none'}} ref={fileInputRef} type="file" onChange={handleFileChange}/>)
+        }
           {image && <DepositImage image={image}/> }
+
           <View style={{ flex: 1, borderColor: "white", justifyContent: "center", padding: 30, borderRadius: 15, borderWidth: 2, borderStyle: "dashed"}}>
           <Entypo name="camera" size={30} color="white" alignSelf="center" />
           </View>

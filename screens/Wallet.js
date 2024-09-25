@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Checkbox from "expo-checkbox";
 import React, { useEffect, useState } from 'react';
-import { AntDesign, Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { api_url } from '../config';
@@ -335,7 +335,7 @@ const Wallet = () => {
               width: 70,
               height: 70
             }}>
-              <Entypo name="wallet" size={30} color="aqua" />
+              <FontAwesome name="bank" size={30} color="aqua" />
               <Text>Loan</Text>
             </View>
           </TouchableOpacity>

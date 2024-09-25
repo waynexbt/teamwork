@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import { api_url } from "../config";
+import CountryFlag from "react-native-country-flag";
 
 const Login = ({ navigation }) => { 
   const dispatch = useDispatch();
@@ -54,6 +55,9 @@ const Login = ({ navigation }) => {
     }
   }, [userState?.currentUser, userState?.error]);
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const emailError = email && !email.match(emailRegex) ? "E-mail format incorrect" : "";
   const signIn = () => {
     if (email && password) {
       setIsLoading(true);
@@ -69,12 +73,14 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <GestureHandlerRootView>
-      <SafeAreaView style={{ backgroundColor: "white", paddingBottom: 300 }}>
+    <GestureHandlerRootView style={{backgroundColor: "white"}}>
+      <SafeAreaView style={{ backgroundColor: "white", paddingBottom: 370 }}>
         <View
           style={{
+            backgroundColor: "white",
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "space-between"
           }}
         >
           <AntDesign
@@ -88,28 +94,30 @@ const Login = ({ navigation }) => {
             }}
             onPress={() => navigation.navigate("Home2")}
           />
+          <Pressable > <CountryFlag isoCode="gb" size={20} style={{padding: 5,
+              marginRight: 20,
+              marginTop: 15,}} /></Pressable>
         </View>
         <View
           style={{
-            padding: 50,
+            padding: 40,
             justifyContent: "center",
             alignItems: "center",
+
           }}
         >
           <Text
             style={{
-              fontSize: 30,
+              fontSize: 32,
               color: "aqua",
               fontWeight: "bold",
               textTransform: "uppercase",
+              paddingBottom: 20,
+              paddingTop: 60
             }}
           >
             Welcome to Bitget
           </Text>
-          <Image
-            source={require("../assets/bitgetlogo.png")}
-            style={{ justifyContent: "center", alignItems: "center" }}
-          ></Image>
         </View>
         <View
           style={{
@@ -122,42 +130,72 @@ const Login = ({ navigation }) => {
           <TextInput
             labelValue={email}
             onChangeText={(userEmail) => setEmail(userEmail)}
-            placeholder="Enter your email address"
+            placeholder="Please enter your email address"
             style={{
-              padding: 15,
+              padding: 17,
               alignItems: "center",
-              width: "85%",
+              width: "90%",
               paddingLeft: 22,
               borderRadius: 8,
-              borderWidth: 1,
+              borderWidth: 1, 
+              fontSize: 18,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
             }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
-          ></TextInput>
+          />
         </View>
+        <View>
+        {email && (
+            <Text style={{ color: "red", marginVertical: 5, marginLeft: 25}}>{emailError}</Text>
+          )}
+        </View>
+
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <TextInput
             labelValue={password}
             onChangeText={(userPassword) => setPassword(userPassword)}
-            placeholder="Enter your password"
+            placeholder="Please enter password"
             style={{
-              padding: 15,
+              padding: 17,
               alignItems: "center",
-              width: "85%",
+              width: "90%",
               paddingLeft: 22,
               borderRadius: 8,
-              borderWidth: 1,
+              borderWidth: 1, 
+              fontSize: 18,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
             }}
             secureTextEntry={true}
+          ></TextInput>
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 20, }}>
+          <TextInput
+            labelValue={password}
+            onChangeText={(userPassword) => setPassword(userPassword)}
+            placeholder="Please enter verification code"
+            style={{
+              padding: 17,
+              alignItems: "center",
+              width: "90%",
+              paddingLeft: 22,
+              borderRadius: 8,
+              borderWidth: 1, 
+              fontSize: 18,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
+            }}
           ></TextInput>
         </View>
         <Text
           style={{
             color: "aqua",
-            paddingTop: 10,
-            paddingBottom: 10,
-            paddingHorizontal: 35,
+            marginLeft: 25,
+            marginVertical: 5,
+            fontSize: 17
           }}
         >
           Forgot your password?
@@ -166,16 +204,14 @@ const Login = ({ navigation }) => {
         <View>
           <Pressable
             style={{
-              width: "75%",
+              width: "90%",
               alignSelf: "center",
-              marginTop: 3,
+              marginTop: 10,
               marginBottom: 10,
-              borderRadius: 35,
               padding: 10,
               backgroundColor: "aqua",
               borderColor: "#D3D3D3",
               borderStyle: "solid",
-              borderWidth: 0.5,
               alignItems: "center",
             }}
             onPress={() => signIn()}
@@ -196,11 +232,11 @@ const Login = ({ navigation }) => {
             )}
           </Pressable>
           <View
-            style={{ flexDirection: "row", gap: 2, justifyContent: "center" }}
+            style={{ flexDirection: "row", gap: 3, justifyContent: "center" }}
           >
-            <Text>Don't have an account?</Text>
+            <Text style={{fontSize: 17 }}>Don't have an account?</Text>
             <Text
-              style={{ color: "aqua" }}
+              style={{ color: "aqua", fontSize: 17 }}
               onPress={() => navigation.navigate("Signup")}
             >
               Sign up

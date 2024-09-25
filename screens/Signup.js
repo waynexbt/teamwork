@@ -147,18 +147,22 @@ const Signup = ({ navigation }) => {
             Create an account
           </Text>
         </View>
-        <View style={{ paddingHorizontal: "6%" }}>
+        <View style={{paddingHorizontal: "5%" }}>
           <View>
             <TextInput
               labelValue={username}
               onChangeText={(username) => setUsername(username)}
               placeholder="Enter your username"
               style={{
-                padding: 15,
+                padding: 17,
                 alignItems: "center",
+                width: "100%",
                 paddingLeft: 22,
                 borderRadius: 8,
-                borderWidth: 1,
+                borderWidth: 1, 
+                fontSize: 16,
+                borderColor: "#ededed",
+                color: "#6e6e6e"
               }}
               secureTextEntry={false}
             />
@@ -173,11 +177,15 @@ const Signup = ({ navigation }) => {
               onChangeText={(userEmail) => setEmail(userEmail)}
               placeholder="Enter your email address"
               style={{
-                padding: 15,
-                alignItems: "center",
-                paddingLeft: 22,
-                borderRadius: 8,
-                borderWidth: 1,
+                padding: 17,
+              alignItems: "center",
+              width: "100%",
+              paddingLeft: 22,
+              borderRadius: 8,
+              borderWidth: 1, 
+              fontSize: 16,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
               }}
               keyboardType="email-address"
               autoCapitalize="none"
@@ -189,9 +197,14 @@ const Signup = ({ navigation }) => {
           )}
           <View
             style={{
+              padding: 17,
+              alignItems: "center",
+              width: "100%",
               borderRadius: 8,
-              borderWidth: 1,
-              padding: 15,
+              borderWidth: 1, 
+              fontSize: 16,
+              borderColor: "#ededed",
+              color: "#6e6e6e",
               marginTop: "3%",
               paddingLeft: 22,
               justifyContent: "space-between",
@@ -201,8 +214,9 @@ const Signup = ({ navigation }) => {
             <TextInput
               labelValue={password}
               onChangeText={(userPassword) => setPassword(userPassword)}
-              placeholder="Enter your password"
-              style={{}}
+              placeholder="Please enter password"
+              style={{color: "#6e6e6e", fontSize: 16
+              }}
               secureTextEntry={!isPasswordVisible}
             />
             <TouchableOpacity onPress={togglePasswordVisibility} style={{}}>
@@ -220,21 +234,25 @@ const Signup = ({ navigation }) => {
           )}
           <View
             style={{
+              padding: 17,
+              alignItems: "center",
+              width: "100%",
               borderRadius: 8,
-              borderWidth: 1,
-              padding: 15,
-
+              borderWidth: 1, 
+              fontSize: 16,
+              borderColor: "#ededed",
+              color: "#6e6e6e",
+              marginTop: "3%",
               paddingLeft: 22,
               justifyContent: "space-between",
               flexDirection: "row",
-              marginVertical: "3%",
             }}
           >
             <TextInput
               labelValue={confirmPassword}
               onChangeText={(userPassword) => setConfirmPassword(userPassword)}
-              placeholder="Confirm password"
-              style={{}}
+              placeholder="Please confirm password"
+              style={{color: "#6e6e6e", fontSize: 16}}
               secureTextEntry={!isPasswordVisible}
             />
             <TouchableOpacity onPress={togglePasswordVisibility} style={{}}>
@@ -252,15 +270,64 @@ const Signup = ({ navigation }) => {
           )}
           <View
             style={{
+              marginTop: "3%",
+            }}
+          >
+            <TextInput
+              labelValue={email}
+              placeholder="Invitation code (Optional)"
+              style={{
+                padding: 17,
+              alignItems: "center",
+              width: "100%",
+              paddingLeft: 22,
+              borderRadius: 8,
+              borderWidth: 1, 
+              fontSize: 16,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
+              }}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View
+            style={{
+              marginTop: "3%",
+            }}
+          >
+            <TextInput
+              labelValue={email}
+              placeholder="Please enter verifcation code"
+              style={{
+                padding: 17,
+              alignItems: "center",
+              width: "100%",
+              paddingLeft: 22,
+              borderRadius: 8,
+              borderWidth: 1, 
+              fontSize: 16,
+              borderColor: "#ededed",
+              color: "#6e6e6e"
+              }}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
+            />
+          </View>
+          <View
+            style={{
               flexDirection: "row",
               marginVertical: 6,
               paddingTop: 5,
               paddingBottom: 5,
+              marginLeft: 5
             }}
           >
             <Checkbox
               style={{
-                marginTop: 2,
+                marginTop: 6,
               }}
               value={isChecked}
               onValueChange={setIsChecked}
@@ -276,17 +343,15 @@ const Signup = ({ navigation }) => {
           <View>
             <Pressable
               style={{
-                width: "75%",
-                alignSelf: "center",
-                marginTop: 3,
-                marginBottom: 10,
-                borderRadius: 35,
-                padding: 10,
-                backgroundColor: "aqua",
-                borderColor: "#D3D3D3",
-                borderStyle: "solid",
-                borderWidth: 0.5,
-                alignItems: "center",
+                width: "100%",
+              alignSelf: "center",
+              marginTop: 10,
+              marginBottom: 10,
+              padding: 10,
+              backgroundColor: "aqua",
+              borderColor: "#D3D3D3",
+              borderStyle: "solid",
+              alignItems: "center",
               }}
               onPress={() => signUp()}
             >
@@ -300,14 +365,14 @@ const Signup = ({ navigation }) => {
                     fontWeight: "bold",
                   }}
                 >
-                  Sign up
+                  Register
                 </Text>
               )}
             </Pressable>
             <View
-              style={{ flexDirection: "row", gap: 2, justifyContent: "center" }}
+              style={{ flexDirection: "row", gap: 2, justifyContent: "center"}}
             >
-              <Text>Already have an account?</Text>
+              <Text style={{fontSize: 18}}>Already have an account?</Text>
               <Text
                 style={{ color: "aqua" }}
                 onPress={() => navigation.navigate("Signup")}

@@ -31,7 +31,7 @@ import { api_url } from "../config";
 import { useSelector } from "react-redux";
 import DepositImage from "../components/DepositImage";
 
-const Usdttrc = ({ navigation }) => {
+const Usdc = ({ navigation }) => {
   const [depositAmount, setDepositAmount] = useState(0);
   const fileInputRef = useRef(null);
 
@@ -50,7 +50,7 @@ console.log("CURRENT USDTTRc",currentUser)
     userId: currentUser?._id,
     username: currentUser?.username,
     amount: depositAmount,
-    currency: 'USDT-TRC',
+    currency: 'USDT-ERC',
   };
   const depositData = JSON.stringify(data);
 
@@ -247,7 +247,7 @@ console.log("CURRENT USDTTRc",currentUser)
             }}
           >
             <Image
-            source={require("../assets/USDT.png")}
+            source={require("../assets/USDT-ERC.png")}
             style={{
               alignItems: "center",
               height: 20,
@@ -262,7 +262,7 @@ console.log("CURRENT USDTTRc",currentUser)
               color: "black",
             }}
           >
-            USDT-TRC
+            USDC-ERC
           </Text>
           </View>
 
@@ -388,15 +388,17 @@ console.log("CURRENT USDTTRc",currentUser)
             justifyContent: "center",
             alignItems: "center",
             alignSelf: "center",
-            padding: 15,
+            padding: 10,
             backgroundColor: "aqua",
-            width: "95%",
+            borderRadius: 25,
+            width: "100%",
             marginTop: 20,
             marginBottom: "5%",
           }}
           onPress={handleDeposit}  
         >
-          <Text style={{ color: "white", marginRight: 5, fontSize: 18 }}>Confirm Deposit</Text>
+          <Text style={{ color: "white", marginRight: 5 }}>Confirm recharge</Text>
+          <Ionicons name="ios-send" size={24} color="white" />
         </TouchableOpacity>
       </ScrollView>
       </SafeAreaView>
@@ -404,4 +406,4 @@ console.log("CURRENT USDTTRc",currentUser)
   );
 };
 
-export default Usdttrc;
+export default Usdc;

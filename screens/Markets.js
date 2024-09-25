@@ -10,7 +10,7 @@ import { getCoinMarket } from '../stores/market/marketActions';
 
 const listTab = [
     {
-        status: 'Optional'
+        status: 'Favorites'
     },
     {
         status: 'Options'
@@ -19,7 +19,7 @@ const listTab = [
         status: 'Spot'
     },
     {
-        status: 'USDT-M'
+        status: 'Futures'
     }
 
 ]
@@ -41,17 +41,24 @@ const Markets = ({ getCoinMarket, coins, navigation}) =>
 
     return(
         <GestureHandlerRootView>
-        <SafeAreaView style={styles.container}>
-            <View
+        <SafeAreaView
+      style={{
+        backgroundColor: "white",
+        height: "100%"
+      }}>
+      <View
         style={{
-          padding: 15,
           backgroundColor: "white",
         }}
       >
         <View
           style={{
             flexDirection: "row",
+            marginTop: 5,
+            padding: 15,
+            backgroundColor: "white",
             justifyContent: "space-between",
+            gap: 10
           }}
         >
           <TouchableOpacity
@@ -65,30 +72,11 @@ const Markets = ({ getCoinMarket, coins, navigation}) =>
           >
             <MaterialCommunityIcons name="dots-grid" size={40} color="black" />
           </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              borderColor: "gray",
-              borderWidth: 1,
-              borderRadius: 20,
-              paddingHorizontal: 70,
-              alignItems: "center",
-            }}
-            onPress={() => handleNavigation("Searchbar")}
-          >
-            <AntDesign
-              name="search1"
-              size={24}
-              color="gray"
-              style={{ marginRight: 5 }}
-            />
-            <TextInput placeholder="Search coin pairs"></TextInput>
-          </View>
+          <TextInput placeholder="Search coin pairs" style={{borderWidth: 1, borderRadius: 20, paddingHorizontal: 15, width: "100%"}} ></TextInput>
 
-          <AntDesign name="customerservice" size={33} color="black" style={{ marginTop: 2}} />
+          <AntDesign name="customerservice" size={33} color="black" style={{ marginTop: 2 }} />
         </View>
-      </View>
+        </View>
             <View style={styles.listTab}>
                 {
                     listTab.map(e => (

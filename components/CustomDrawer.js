@@ -1,22 +1,30 @@
-import React, { useEffect, useState, userReducer } from "react";
+import React, { useEffect, useRef, useState, userReducer } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
+  Pressable
 } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { FontAwesome, MaterialIcons, Feather, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, AntDesign, Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogOut } from "../stores/user/userActions";
 import IdentityVerificationModal from "./IdentityVerificationModal";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage 
+from "@react-native-async-storage/async-storage";
+import "../translation"
+import i18n from "../translation"
+import { useTranslation } from "react-i18next";
+import {useNavigation} from '@react-navigation/native';
 
 const CustomDrawer = (props) => {
+  const { t } = useTranslation();
+  const navigation = useNavigation();
   // const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -49,6 +57,7 @@ const CustomDrawer = (props) => {
       routes: [{ name: "Home2" }],
       key: Math.random().toString(), // Change the key to force a full refresh
     });
+
   };
   return (
     <View
@@ -63,6 +72,30 @@ const CustomDrawer = (props) => {
           backgroundColor: "white",
         }}
       >
+        
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between"
+          }}
+        >
+          <Ionicons
+            name="arrow-back-outline"
+            size={30}
+            color="black"
+            style={{
+              padding: 5,
+              marginLeft: 10,
+              marginTop: 12,
+            }}
+            onPress={() => navigation.closeDrawer("")}
+          />
+          <AntDesign name="customerservice" size={30} color="black" style={{  padding: 5,
+              marginRight: 10,
+              marginTop: 12, }} />
+        </View>
         <View
           style={{
             flexDirection: "row",
@@ -70,10 +103,11 @@ const CustomDrawer = (props) => {
         >
           <FontAwesome
             name="user-circle"
-            size={65}
+            size={50}
             color="black"
             style={{
-              padding: 20,
+              padding: 15,
+              marginTop: 15
             }}
           />
           <View style={{ flexDirection: "column" }}>
@@ -84,41 +118,13 @@ const CustomDrawer = (props) => {
             </Text>
             <Text style={{ color: "gray" }}>UID: 71733</Text>
            <Text style={{ color: "gray" }}>Credit Score: 70</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <MaterialIcons
-                name="verified"
-                size={20}
-                // color={userReducer?.currentUser?.isVerified ? "lime":"gray"}
-                color="lime"
-              />
-              <Text
-                // style={ userReducer?.currentUser?.isVerified ? styles.verifiedStyle : styles.notVeirfiedStyle }
-                style={styles.verifiedStyle}
-              >
-                {/* {userReducer?.currentUser?.isVerified
-                  ? "Verified"
-                  : "Not verified"} */}
-                Verified
-              </Text>
             </View>
-            {/* { !userReducer?.currentUser?.isVerified && <TouchableOpacity >
-               <Text style={{fontSize:12, textDecorationLine:"underline"}}>
-                Click here to verify
-               </Text>
-              </TouchableOpacity>} */}
-          </View>
         </View>
         <View>
           <View style={{
             padding: 10,
             backgroundColor: "aqua",
-            marginHorizontal: 30,
+            marginHorizontal: 13,
             borderRadius: 10,
             flexDirection: "row",
             gap: 20,
@@ -168,7 +174,7 @@ const CustomDrawer = (props) => {
               style={{
                 color: "white",
                 alignSelf: "center",
-                fontSize: 15,
+                fontSize: 18,
                 fontWeight: "bold",
               }}
             >
@@ -176,6 +182,7 @@ const CustomDrawer = (props) => {
             </Text>
           {/* )} */}
         </TouchableOpacity>
+
       </View>
   );
 };

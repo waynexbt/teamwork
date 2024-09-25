@@ -3,7 +3,7 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -80,11 +80,11 @@ const Deposithistory = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{
-      backgroundColor: "white"
+      backgroundColor: "red"
     }}>
       <ScrollView
         style={{
-          backgroundColor: "white",
+          backgroundColor: "red",
           height: "100%",
           width: "100%",
           padding: "3%",
@@ -96,9 +96,9 @@ const Deposithistory = ({ navigation }) => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Pressable onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back-outline" size={30} color="black" />
-          </TouchableOpacity>
+          </Pressable>
           <Text
             style={{
               color: "black",

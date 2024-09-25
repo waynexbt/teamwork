@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
   FlatList,
   Pressable,
   Image,
@@ -18,9 +17,7 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
   MaterialIcons,
-  AntDesign,
   Feather,
-  Ionicons
 } from "@expo/vector-icons";
 import { style } from "deprecated-react-native-prop-types/DeprecatedViewPropTypes";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -32,11 +29,22 @@ import { LineChart } from "react-native-chart-kit";
 import AuthModal from "../components/AuthModal";
 import { exptyingError } from "../stores/user/userActions";
 import CoinSearchComponent from "../components/CoinSearch";
+import CountryFlag from "react-native-country-flag";
+import { BottomSheetModalProvider, BottomSheetModal } from "@gorhom/bottom-sheet";
+import 'react-native-gesture-handler';
 
 function Home({ getCoinMarket, coins }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const BottomSheetModalRef = useRef(null);
+  const snapPoints = ["48%"];
+
+  function handlePresentModal() {
+    BottomSheetModalRef.current?.present();
+    
+  };
+
 
   // const user = useSelector((state) => state?.userReducer?.currentUser?.token);
   const user = useSelector((state) => state?.userReducer?.currentUser?.token);
@@ -65,6 +73,7 @@ function Home({ getCoinMarket, coins }) {
   console.log(coins)
 
   return (
+    <BottomSheetModalProvider>
     <SafeAreaView
       style={{
         backgroundColor: "white",
@@ -85,7 +94,7 @@ function Home({ getCoinMarket, coins }) {
             gap: 10
           }}
         >
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               if (currentUser) {
                 navigation.openDrawer();
@@ -95,10 +104,9 @@ function Home({ getCoinMarket, coins }) {
             }}
           >
             <MaterialCommunityIcons name="dots-grid" size={40} color="black" />
-          </TouchableOpacity>
+          </Pressable>
           <TextInput placeholder="Search coin pairs" style={{borderWidth: 1, borderRadius: 20, paddingHorizontal: 15, width: "100%"}} ></TextInput>
-
-          <AntDesign name="customerservice" size={33} color="black" style={{ marginTop: 2 }} />
+          <Pressable onPress={handlePresentModal} > <CountryFlag isoCode="gb" size={20} style={{marginTop: 10}} /></Pressable>
         </View>
         {/* <View style={{ zIndex: 10000 }}>
           <CoinSearchComponent coins={coins} />
@@ -107,7 +115,7 @@ function Home({ getCoinMarket, coins }) {
           <Carousel />
         </View>
         <View style={styles.IconContainer}>
-          <TouchableOpacity
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => {
               if (currentUser) {
@@ -121,17 +129,23 @@ function Home({ getCoinMarket, coins }) {
               <FontAwesome name="cc-mastercard" size={30} color="aqua" />
               <Text style={styles.txtbtn}>Deposit</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.categoryBtn}
-            onPress={() => handleNavigation("switchtab")}
+            onPress={() => {
+              if (currentUser) {
+                navigation.navigate("Withdraw");
+              } else {
+                setShowModal(true);
+              }
+            }}
           >
             <View style={styles.IconCategory}>
               <Entypo name="wallet" size={30} color="aqua" />
-              <Text style={styles.txtbtn}>Loan</Text>
+              <Text style={styles.txtbtn}>Withdraw</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => handleNavigation("Exchange")}
           >
@@ -139,8 +153,8 @@ function Home({ getCoinMarket, coins }) {
               <FontAwesome5 name="exchange-alt" size={30} color="aqua" />
               <Text style={styles.txtbtn}>Exchange</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => handleNavigation("Referral")}
           >
@@ -148,10 +162,10 @@ function Home({ getCoinMarket, coins }) {
               <MaterialIcons name="verified" size={30} color="aqua" />
               <Text style={styles.txtbtn}>Referral</Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </View>
         <View style={styles.IconContainer2}>
-          <TouchableOpacity
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => handleNavigation("DeFi")}
           >
@@ -159,17 +173,17 @@ function Home({ getCoinMarket, coins }) {
               <Entypo name="wallet" size={30} color="aqua" />
               <Text style={styles.txtbtn}>DeFi</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => handleNavigation("DeFi")}
           >
             <View style={styles.IconCategory}>
               <Entypo name="wallet" size={30} color="aqua" />
-              <Text style={styles.txtbtn}>Pledge</Text>
+              <Text style={styles.txtbtn}>Staking</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             onPress={() => navigation.navigate("Trade")}
             style={styles.categoryBtn}
           >
@@ -177,16 +191,16 @@ function Home({ getCoinMarket, coins }) {
               <Entypo name="user" size={30} color="aqua" />
               <Text style={styles.txtbtn}>Options</Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
+          </Pressable>
+          <Pressable
             style={styles.categoryBtn}
             onPress={() => handleNavigation("spot")}
           >
             <View style={styles.IconCategory}>
-              <FontAwesome5 name="chart-pie" size={30} color="aqua" />
-              <Text style={styles.txtbtn}>Spot</Text>
+              <MaterialIcons name="support-agent" size={30} color="aqua" />
+              <Text style={styles.txtbtn}>Support</Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/** *PopularCrypto/** */}
@@ -226,7 +240,7 @@ function Home({ getCoinMarket, coins }) {
                     ? "#2ebd85"
                     : "#df294a";
               return (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     if (currentUser) {
                       navigation.navigate("Trade", {
@@ -306,6 +320,15 @@ function Home({ getCoinMarket, coins }) {
                       </View>
                     </View>
                     {/*linechart*/}
+                    <BottomSheetModal
+        ref={BottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        >
+          <View>
+            <Text>Hello and Welcome</Text> </View>
+        </BottomSheetModal>
+
                     {/*linechart*/}
                     <View
                       style={{
@@ -409,7 +432,7 @@ function Home({ getCoinMarket, coins }) {
                     </View>
                     {/*figures*/}
                   </View>
-                </TouchableOpacity>
+                </Pressable>
               );
             }}
             style={{ height: "100%", width: "100%" }}
@@ -422,6 +445,7 @@ function Home({ getCoinMarket, coins }) {
         />
       </ScrollView>
     </SafeAreaView>
+    </BottomSheetModalProvider>
   );
 }
 
