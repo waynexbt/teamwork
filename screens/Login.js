@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
-import { React, useEffect, useState } from "react";
+import { React, useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -7,12 +7,14 @@ import {
   NativeViewGestureHandler,
   TextInput,
 } from "react-native-gesture-handler";
+// 
+import Svg, { Text as SvgText, Circle, Rect } from 'react-native-svg';
+
 import { userLogin } from "../stores/user/userActions";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import { api_url } from "../config";
-import CountryFlag from "react-native-country-flag";
 
 const Login = ({ navigation }) => { 
   const dispatch = useDispatch();
@@ -20,9 +22,16 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  // 
+  const [captcha, setCaptcha] = useState(generateCaptcha());
+  const [userInput, setUserInput] = useState('');
+  const [backgroundShapes, setBackgroundShapes] = useState([]);
+
+
+// 
   const user = { email: email, password: password };
   const userState = useSelector((state) => state?.userReducer);
-  console.log(userState);
+  
   useEffect(() => {
     if (userState?.currentUser?.username) {
       setIsLoading(false);
@@ -55,10 +64,21 @@ const Login = ({ navigation }) => {
     }
   }, [userState?.currentUser, userState?.error]);
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  useEffect(() => {
+    // Generate background shapes when the component mounts or CAPTCHA changes
+    setBackgroundShapes(renderBackgroundShapes());
+  }, [captcha]);
 
-  const emailError = email && !email.match(emailRegex) ? "E-mail format incorrect" : "";
   const signIn = () => {
+    if(userInput !== captcha){
+      Toast.show({
+        type: "error",
+        text1: "Wrong captcha",
+        text2: `Please enter valid captcha`,
+      });
+      return;
+    }
+
     if (email && password) {
       setIsLoading(true);
       dispatch(userLogin(user));
@@ -72,15 +92,54 @@ const Login = ({ navigation }) => {
     }
   };
 
+  function generateCaptcha (){
+    return Math.floor(1000 + Math.random() * 9000).toString(); // 4-digit number
+  }
+
+  const renderBackgroundShapes = () => {
+    const shapes = [];
+    for (let i = 0; i < 10; i++) {
+      const shapeType = Math.random() > 0.5 ? 'circle' : 'rect';
+      const color = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.3)`;
+
+      if (shapeType === 'circle') {
+        shapes.push(
+          <Circle
+            key={i}
+            cx={Math.random() * 120} // Adjusted for reduced width
+            cy={Math.random() * 40} // Adjusted for reduced height
+            r={Math.random() * 10 + 5} // Random radius
+            fill={color}
+          />
+        );
+      } else {
+        shapes.push(
+          <Rect
+            key={i}
+            x={Math.random() * 120} // Adjusted for reduced width
+            y={Math.random() * 40} // Adjusted for reduced height
+            width={Math.random() * 15 + 5} // Random width
+            height={Math.random() * 15 + 5} // Random height
+            fill={color}
+          />
+        );
+      }
+    }
+    return shapes;
+  };
+
+  const getColorForDigit = (digit) => {
+    const colors = ['#000000', '#4B0082', '#8B0000', '#FF4500', '#2E8B57', '#00008B', '#A52A2A', '#483D8B'];
+    return colors[digit] || '#000000'; // Fallback to black
+  };
+
   return (
-    <GestureHandlerRootView style={{backgroundColor: "white"}}>
-      <SafeAreaView style={{ backgroundColor: "white", paddingBottom: 370 }}>
+    <GestureHandlerRootView>
+      <SafeAreaView style={{ backgroundColor: "white", paddingBottom: 300 }}>
         <View
           style={{
-            backgroundColor: "white",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-between"
           }}
         >
           <AntDesign
@@ -94,30 +153,28 @@ const Login = ({ navigation }) => {
             }}
             onPress={() => navigation.navigate("Home2")}
           />
-          <Pressable > <CountryFlag isoCode="gb" size={20} style={{padding: 5,
-              marginRight: 20,
-              marginTop: 15,}} /></Pressable>
         </View>
         <View
           style={{
-            padding: 40,
+            padding: 50,
             justifyContent: "center",
             alignItems: "center",
-
           }}
         >
           <Text
             style={{
-              fontSize: 32,
+              fontSize: 30,
               color: "aqua",
               fontWeight: "bold",
               textTransform: "uppercase",
-              paddingBottom: 20,
-              paddingTop: 60
             }}
           >
             Welcome to Bitget
           </Text>
+          <Image
+            source={require("../assets/bitgetlogo.png")}
+            style={{ justifyContent: "center", alignItems: "center" }}
+          ></Image>
         </View>
         <View
           style={{
@@ -130,72 +187,84 @@ const Login = ({ navigation }) => {
           <TextInput
             labelValue={email}
             onChangeText={(userEmail) => setEmail(userEmail)}
-            placeholder="Please enter your email address"
+            placeholder="Enter your email address"
             style={{
-              padding: 17,
+              padding: 15,
               alignItems: "center",
-              width: "90%",
+              width: "85%",
               paddingLeft: 22,
               borderRadius: 8,
-              borderWidth: 1, 
-              fontSize: 18,
-              borderColor: "#ededed",
-              color: "#6e6e6e"
+              borderWidth: 1,
             }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
-          />
+          ></TextInput>
         </View>
-        <View>
-        {email && (
-            <Text style={{ color: "red", marginVertical: 5, marginLeft: 25}}>{emailError}</Text>
-          )}
-        </View>
-
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={{ justifyContent: "center", alignItems: "center", paddingBottom: 20, }}>
           <TextInput
             labelValue={password}
             onChangeText={(userPassword) => setPassword(userPassword)}
-            placeholder="Please enter password"
+            placeholder="Enter your password"
             style={{
-              padding: 17,
+              padding: 15,
               alignItems: "center",
-              width: "90%",
+              width: "85%",
               paddingLeft: 22,
               borderRadius: 8,
-              borderWidth: 1, 
-              fontSize: 18,
-              borderColor: "#ededed",
-              color: "#6e6e6e"
+              borderWidth: 1,
             }}
             secureTextEntry={true}
           ></TextInput>
         </View>
-        <View style={{ justifyContent: "center", alignItems: "center", paddingTop: 20, }}>
+
+        <View style={{ alignItems: "center",flexDirection:"row",
+          borderRadius: 8,
+          borderWidth: 1,
+          width: "85%",
+          margin:"auto"
+         }}>
           <TextInput
-            labelValue={password}
-            onChangeText={(userPassword) => setPassword(userPassword)}
-            placeholder="Please enter verification code"
+            labelValue={captcha}
+            onChangeText={(captchaText) => setUserInput(captchaText)}
+            placeholder="Enter captcha"
             style={{
-              padding: 17,
+              padding: 15,
               alignItems: "center",
-              width: "90%",
               paddingLeft: 22,
-              borderRadius: 8,
-              borderWidth: 1, 
-              fontSize: 18,
-              borderColor: "#ededed",
-              color: "#6e6e6e"
             }}
           ></TextInput>
+
+
+          <Svg height="40" width="120" > 
+            {backgroundShapes}
+            {captcha.split('').map((digit, index) => (
+              <SvgText
+                key={index}
+                x={25 + index * 25} // Adjusted for new width
+                y="30" // Adjusted Y position for centering
+                textAnchor="middle"
+                fontSize="20" // Adjusted font size
+                fill={getColorForDigit(digit)}
+                fontWeight="bold"
+              >
+                {digit}
+              </SvgText>
+            ))}
+          </Svg>
+          
         </View>
+
+        {/*  */}
+
+     
+        
         <Text
           style={{
             color: "aqua",
-            marginLeft: 25,
-            marginVertical: 5,
-            fontSize: 17
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingHorizontal: 35,
           }}
         >
           Forgot your password?
@@ -204,14 +273,16 @@ const Login = ({ navigation }) => {
         <View>
           <Pressable
             style={{
-              width: "90%",
+              width: "75%",
               alignSelf: "center",
-              marginTop: 10,
+              marginTop: 3,
               marginBottom: 10,
+              borderRadius: 35,
               padding: 10,
               backgroundColor: "aqua",
               borderColor: "#D3D3D3",
               borderStyle: "solid",
+              borderWidth: 0.5,
               alignItems: "center",
             }}
             onPress={() => signIn()}
@@ -232,11 +303,11 @@ const Login = ({ navigation }) => {
             )}
           </Pressable>
           <View
-            style={{ flexDirection: "row", gap: 3, justifyContent: "center" }}
+            style={{ flexDirection: "row", gap: 2, justifyContent: "center" }}
           >
-            <Text style={{fontSize: 17 }}>Don't have an account?</Text>
+            <Text>Don't have an account?</Text>
             <Text
-              style={{ color: "aqua", fontSize: 17 }}
+              style={{ color: "aqua" }}
               onPress={() => navigation.navigate("Signup")}
             >
               Sign up

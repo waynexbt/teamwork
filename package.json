@@ -2,6 +2,7 @@
   "name": "cryptoexchange",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "description": "description for crypto exchange",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -49,7 +50,7 @@
     "react-native-gesture-handler": "~2.12.0",
     "react-native-haptic-feedback": "^2.2.0",
     "react-native-image-picker": "^7.1.0",
-    "react-native-image-slider-box": "^2.0.7",
+    "react-native-image-slider-box": "megamaxs1234/react-native-image-slider-box",
     "react-native-kline": "^2.1.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
