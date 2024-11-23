@@ -1,5 +1,5 @@
 import { View, Text, Image, Pressable, ActivityIndicator } from "react-native";
-import { React, useCallback, useEffect, useState } from "react";
+import { React, useCallback, useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -7,6 +7,7 @@ import {
   NativeViewGestureHandler,
   TextInput,
 } from "react-native-gesture-handler";
+import RBSheet from 'react-native-raw-bottom-sheet';
 // 
 import Svg, { Text as SvgText, Circle, Rect } from 'react-native-svg';
 
@@ -15,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import { api_url } from "../config";
+import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Login = ({ navigation }) => { 
   const dispatch = useDispatch();
@@ -31,6 +33,10 @@ const Login = ({ navigation }) => {
 // 
   const user = { email: email, password: password };
   const userState = useSelector((state) => state?.userReducer);
+
+
+  // 
+  const refRBSheet = useRef();
   
   useEffect(() => {
     if (userState?.currentUser?.username) {
@@ -232,6 +238,7 @@ const Login = ({ navigation }) => {
               padding: 15,
               alignItems: "center",
               paddingLeft: 22,
+              maxWidth: "57%"
             }}
           ></TextInput>
 
@@ -314,7 +321,44 @@ const Login = ({ navigation }) => {
             </Text>
           </View>
         </View>
+
+        <Pressable onPress={() => {
+          refRBSheet.current.open()
+          
+        }}>
+          <Text>click me to open bottom sheet</Text>
+        </Pressable>
+
       </SafeAreaView>
+
+      <RBSheet
+        ref={refRBSheet}
+        useNativeDriver={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'transparent',
+          },
+          draggableIcon: {
+            backgroundColor: '#000',
+          },
+          container:{
+            borderWidth:2
+          }
+        }}
+        customModalProps={{
+          animationType: 'slide',
+          statusBarTranslucent: true,
+        }}
+        customAvoidingViewProps={{
+          enabled: false,
+        }}
+        height={200}
+        draggable={true}>
+        <Text>Option1</Text>
+        <Text>Option2</Text>
+        <Text>Option3</Text>
+      </RBSheet>
+
     </GestureHandlerRootView>
   );
 };

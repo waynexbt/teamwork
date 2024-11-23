@@ -59,7 +59,7 @@ const WithdrawUSDTTRC = ({ navigation }) => {
 
   const currencies = [
   { id: '1', label: 'USDT-TRC'},
-  { id: '2', label: 'BTC'},
+  // { id: '2', label: 'BTC'},
 
 ]
 
@@ -235,7 +235,8 @@ const withdrawAmount = async () => {
             marginTop: 20,
             alignItems: "center",
             width: "100%",
-            marginLeft: "3%"
+            marginLeft: "3%",
+            justifyContent:"space-between"
           }}
         >
           <Text
@@ -246,30 +247,36 @@ const withdrawAmount = async () => {
           >
             Available Balance: 
           </Text>
-          </View>
-        <View style={{ ustifyContent: "center" }}>
-          <View style={{ justifyContent: "center", flexDirection:"row",marginBottom:15 }}>
-            <FlatList showsHorizontalScrollIndicator={false}
-            color="white"
-            flexDirection="row"
-            data={currencies}
-            horizontal
-            // style={styles.flatList}
-            keyExtractor={(item) => item._id}
-            renderItem={({item, index})=>{
-              return(
-                <Pressable style={selectedCurrency == index ? {...styles.currencyButton, backgroundColor:"aqua"}:styles.currencyButton} onPress={()=> setSelectedCurrency(index)}>
-              <Text style={selectedCurrency == index ?{color: "black", fontSize:18, textAlign:"center", fontWeight:"bold"}: {color: "white", fontSize:18, textAlign:"center"}}>{item.label}</Text>
 
-            </Pressable>
-              )
-            }} 
-            />
+            <View style={{ ustifyContent: "center",flexDirection:"row",paddingRight:"6%" }}>
+            {/* <View style={{ justifyContent: "center", flexDirection:"row",marginBottom:15 }}>
+              <FlatList showsHorizontalScrollIndicator={false}
+              color="white"
+              flexDirection="row"
+              data={currencies}
+              horizontal
+              // style={styles.flatList}
+              keyExtractor={(item) => item._id}
+              renderItem={({item, index})=>{
+                return(
+                  <Pressable style={selectedCurrency == index ? {...styles.currencyButton, backgroundColor:"aqua"}:styles.currencyButton} onPress={()=> setSelectedCurrency(index)}>
+                <Text style={selectedCurrency == index ?{color: "black", fontSize:18, textAlign:"center", fontWeight:"bold"}: {color: "white", fontSize:18, textAlign:"center"}}>{item.label}</Text>
+
+              </Pressable>
+                )
+              }} 
+              />
+              
+            </View> */}
+            {conecerndAmount ? <Text style={styles.buttonText}>{conecerndAmount?.name}{":  "}{conecerndAmount?.amount}</Text> : "0"} {currencies[0].label}
             
+            </View>
           </View>
-          {conecerndAmount && <Text style={styles.buttonText}>{conecerndAmount?.name}{":  "}{conecerndAmount?.amount}</Text>}</View>
+          
+        
         <View style={{
           marginLeft: "3%",
+          marginTop:"5%"
         }}>
           <Text
             style={{
